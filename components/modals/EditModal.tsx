@@ -1,5 +1,5 @@
 // components/modals/EditModal.tsx
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import {
   Modal,
   View,
@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   StyleSheet,
   LayoutChangeEvent,
-  Image, // resolveAssetSource 및 표시용
+  Image,
 } from 'react-native';
 
+import { useTranslation } from 'react-i18next';
 import RandomImageButton from '../camera/RandomImageButton';
-// ⚠️ 현재 실제 파일명이 ServerityPicker.tsx 이므로, 임시로 오타 경로에 맞춰 import
 import SeverityPicker from '../risk/SeverityPicker';
-
+import { reverseGeocode, coordLabel } from '../dev/amapGeocode';
 import { useAlerts } from '../notification/alertsStore';
 import type { Severity } from '../notification/alertsStore';
 
@@ -42,9 +42,10 @@ const JANGSU_UNIV: LatLng = {
 export default function EditModal({
   visible, value, onChange, onClose, onUpload,
 }: Props) {
+  const { t } = useTranslation();
   const here: LatLng = JANGSU_UNIV;
 
-  const { addUserAlert } = useAlerts(); // ✅ 컴포넌트 내부에서 호출
+  const { addUserAlert, updateUserAlertSubtitle } = useAlerts();
   const [pickedImg, setPickedImg] = useState<number | null>(null);
   const [severity, setSeverity] = useState<Severity>('yellow');
 
@@ -52,6 +53,7 @@ export default function EditModal({
   const [progress, setProgress] = useState(0); // 0~1
   const [btnWidth, setBtnWidth] = useState(0);
   const fakeTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const wasVisible = useRef(false);
 
   const onBtnLayout = (e: LayoutChangeEvent) => setBtnWidth(e.nativeEvent.layout.width);
 
@@ -61,9 +63,35 @@ export default function EditModal({
       setProgress((p) => (p < 0.95 ? p + (1 - p) * 0.12 : p));
     }, 250);
   };
-  const stopFake = () => {
+
+  const stopFake = useCallback(() => {
     if (fakeTimer.current) clearInterval(fakeTimer.current);
     fakeTimer.current = null;
+  }, []);
+
+  /** 폼 초기화(텍스트 포함) */
+  const resetForm = useCallback(() => {
+    stopFake();
+    setPickedImg(null);
+    setSeverity('yellow');
+    setLoading(false);
+    setProgress(0);
+    setBtnWidth(0);
+    onChange(''); // 부모의 입력값까지 비움
+  }, [stopFake, onChange]);
+
+  /** 모달이 열릴 때마다 폼을 초기화 */
+  useEffect(() => {
+    if (visible && !wasVisible.current) {
+      resetForm();
+    }
+    wasVisible.current = visible;
+  }, [visible, resetForm]);
+
+  const handleCancel = () => {
+    if (loading) return;
+    resetForm();
+    onClose();
   };
 
   const handleUpload = async () => {
@@ -73,30 +101,40 @@ export default function EditModal({
     startFake();
 
     try {
-      // 로컬 require 리소스를 업로드할 경우, 파일 uri로 변환
       const photoUri =
         pickedImg != null ? Image.resolveAssetSource(pickedImg).uri : undefined;
 
-      // (1) 진행률 페이크 콜백
+      // (1) 업로드 진행
       await onUpload(
         { note: value, location: here, photoUri },
         (p: number) => setProgress(Math.max(0, Math.min(1, p)))
       );
 
-      // (2) 사용자 알림 저장
-      addUserAlert({
-        title: value?.trim() ? value.trim() : '사용자 신고',
-        subtitle: `${here.latitude.toFixed(5)}, ${here.longitude.toFixed(5)}`,
+      // (2) 사용자 알림: 우선 좌표로 추가
+      const initialSubtitle = coordLabel(here.latitude, here.longitude);
+      const id = addUserAlert({
+        title: value?.trim() ? value.trim() : t('alerts.userReportDefaultTitle'),
+        subtitle: initialSubtitle,
         photoUri,
         severity,
         location: here,
       });
 
+      // (3) 주소 조회 성공 시 해당 항목만 치환
+      reverseGeocode(here.longitude, here.latitude)
+        .then((re) => {
+          const addr = re?.formattedAddress;
+          if (addr && addr !== initialSubtitle) {
+            updateUserAlertSubtitle(id, addr);
+          }
+        })
+        .catch(() => { /* 실패 시 좌표 유지 */ });
+
+      // (4) 종료/리셋
       stopFake();
       setProgress(1);
       setTimeout(() => {
-        setLoading(false);
-        setProgress(0);
+        resetForm(); // 텍스트/이미지/위험도 모두 초기화
         onClose();
       }, 300);
     } catch (e) {
@@ -108,14 +146,14 @@ export default function EditModal({
   };
 
   return (
-    <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
+    <Modal visible={visible} transparent animationType="fade" onRequestClose={handleCancel}>
       <View style={styles.backdrop}>
         <View style={styles.card}>
-          <Text style={styles.title}>업로드</Text>
+          <Text style={styles.title}>{t('edit.uploadTitle')}</Text>
 
           {/* 현 위치 */}
           <View style={styles.rowInfo}>
-            <Text style={styles.label}>현 위치 </Text>
+            <Text style={styles.label}>{t('edit.currentLocation')}</Text>
             <Text style={styles.value}>
               {here.latitude.toFixed(6)}, {here.longitude.toFixed(6)}
             </Text>
@@ -124,19 +162,18 @@ export default function EditModal({
           {/* 설명 */}
           <TextInput
             style={styles.input}
-            placeholder="설명을 입력하세요"
+            placeholder={t('edit.inputPlaceholder')}
             value={value}
             onChangeText={onChange}
             editable={!loading}
             multiline
           />
 
-          {/* 사진 영역: 버튼을 누를 때마다 한 장씩 표시/교체 */}
+          {/* 사진 영역 */}
           <View style={styles.imageBox}>
             {pickedImg ? (
               <>
                 <Image source={pickedImg} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
-                {/* 우하단 다시 뽑기 */}
                 <RandomImageButton
                   style={{ position: 'absolute', right: 10, bottom: 10 }}
                   size={20}
@@ -145,7 +182,6 @@ export default function EditModal({
                 />
               </>
             ) : (
-              // 처음 상태: 중앙 버튼
               <RandomImageButton
                 style={{
                   position: 'absolute', left: 0, right: 0, top: 0, bottom: 0,
@@ -160,7 +196,9 @@ export default function EditModal({
 
           {/* 위험도 선택 */}
           <View style={{ marginBottom: 8 }}>
-            <Text style={{ fontSize: 13, color: '#6b7280', marginBottom: 6 }}>위험도</Text>
+            <Text style={{ fontSize: 13, color: '#6b7280', marginBottom: 6 }}>
+              {t('edit.severity')}
+            </Text>
             <SeverityPicker value={severity} onChange={setSeverity} disabled={loading} />
           </View>
 
@@ -168,10 +206,10 @@ export default function EditModal({
           <View style={styles.actions}>
             <TouchableOpacity
               style={[styles.btn, styles.btnGhost]}
-              onPress={() => { if (!loading) onClose(); }}
+              onPress={handleCancel}
               disabled={loading}
             >
-              <Text style={styles.btnGhostText}>취소</Text>
+              <Text style={styles.btnGhostText}>{t('common.cancel')}</Text>
             </TouchableOpacity>
 
             <View style={{ width: 12 }} />
@@ -187,7 +225,7 @@ export default function EditModal({
                 <View style={[styles.progressFill, { width: btnWidth * progress }]} />
               )}
               <Text style={styles.btnPrimaryText}>
-                {loading ? `${Math.round(progress * 100)}%` : '업로드'}
+                {loading ? `${Math.round(progress * 100)}%` : t('common.upload')}
               </Text>
             </TouchableOpacity>
           </View>

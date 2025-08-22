@@ -1,0 +1,93 @@
+{
+  "app": { "title": "FloodGuard" },
+
+  "nav": {
+    "pencilLabel": "신고 모달 열기",
+    "pencilHint": "새 사용자 신고 작성",
+    "bellLabel": "알림 열기",
+    "bellHint": "알림 사이드바 표시"
+  },
+
+  "common": {
+    "close": "닫기",
+    "cancel": "취소",
+    "upload": "업로드",
+    "preview": "미리보기"
+  },
+
+  "edit": {
+    "uploadTitle": "업로드",
+    "currentLocation": "현 위치",
+    "inputPlaceholder": "설명을 입력하세요",
+    "severity": "위험도"
+  },
+
+  "alerts": {
+    "title": "알림",
+    "userReportDefaultTitle": "사용자 신고",
+    "tabs": {
+      "userReports": "사용자 신고",
+      "systemReports": "앱 제공"
+    },
+
+    "systemEmptyTitle": "앱 제공 알림 영역",
+    "systemEmptyDesc": "여기에 앱에서 제공하는 공지/경보가 표시됩니다.\n(시연용) 아래 버튼을 눌러 데모 알림을 볼 수 있어요.",
+    "showDemo": "데모 알림 보기",
+    "demoBadge": "시연용 데모 데이터",
+    "hide": "숨기기",
+
+    "demo": {
+      "floodWarningTitle": "침수 경보(시범)",
+      "floodWarningSubtitle": "중문 교차로",
+      "slowDownTitle": "서행 권고(시범)",
+      "slowDownSubtitle": "체육관 앞 도로",
+      "drainWorkTitle": "배수 작업 중(시범)",
+      "drainWorkSubtitle": "기숙사 A동"
+    },
+
+    "tapToZoom": "탭하여 확대",
+
+    "timeAgo": {
+      "justNow": "방금",
+      "m": "{{count}}분 전",
+      "h": "{{count}}시간 전",
+      "hHalf": "{{h}}시간 {{half}}분 전",
+      "d": "{{count}}일 전"
+    }
+  },
+
+  "toast": {
+    "noPhoto": "첨부된 사진이 없습니다"
+  },
+
+  "camera": {
+    "permission": { "denied": "설정에서 카메라/사진 권한을 허용해주세요." },
+    "launchFailed": "카메라 실행에 실패했어요.",
+    "errorTitle": "카메라 오류"
+  },
+
+  "map": {
+    "myLocation": "내 위치",
+    "moveApiMissing": "이 MapView에서 카메라 이동 API를 찾지 못했습니다."
+  },
+
+  "guide": {
+    "title": "(긴급공지) 마커설명",
+    "sub": "다음은 이 지도에서 사용하는 3가지 주된 마커입니다.\n각 색상 별 위험도 기준을 읽고, 숙지 후 사용자 신고 기능을 사용하시길 권장합니다.",
+    "dontShowAgain": "다신 안 보시겠습니까?",
+    "rows": {
+      "red": {
+        "title": "3시간 누적 강수 ≥ 100 mm",
+        "desc": ["하천/도로 무릎 깊이 이상", "차도, 도로가 완전히 잠길 수준"]
+      },
+      "orange": {
+        "title": "3시간 누적 강수 ≥ 50 mm",
+        "desc": ["무릎 아래 정도까지 물이 차오를 수 있음", "계단 하단, 낮은 보도 등"]
+      },
+      "yellow": {
+        "title": "6시간 누적 강수 ≥ 50 mm",
+        "desc": ["보통 우산 없이 발목 아래 정도", "가볍게 물이 튀는 수준"]
+      }
+    }
+  }
+}

@@ -9,6 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { launchCamera, CameraOptions, Asset } from 'react-native-image-picker';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   size?: number;                 // 아이콘(텍스트) 크기
@@ -24,6 +25,7 @@ async function requestPerms(): Promise<boolean> {
     const cam = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA
     );
+
     const read =
       (PermissionsAndroid as any).PERMISSIONS.READ_MEDIA_IMAGES
         ? await PermissionsAndroid.request(
@@ -32,11 +34,12 @@ async function requestPerms(): Promise<boolean> {
         : await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
           );
+
     return (
       cam === PermissionsAndroid.RESULTS.GRANTED &&
       read === PermissionsAndroid.RESULTS.GRANTED
     );
-  } catch (e) {
+  } catch {
     return false;
   }
 }
@@ -48,13 +51,17 @@ export default function CameraCaptureButton({
   onCaptured,
   onError,
 }: Props) {
+  const { t } = useTranslation();
+
   const onPress = async () => {
     if (disabled) return;
+
     const ok = await requestPerms();
     if (!ok) {
-      onError('설정에서 카메라/사진 권한을 허용해주세요.');
+      onError(t('camera.permission.denied'));
       return;
     }
+
     try {
       const options: CameraOptions = {
         mediaType: 'photo',
@@ -63,16 +70,19 @@ export default function CameraCaptureButton({
         cameraType: 'back',
         presentationStyle: 'fullScreen',
       };
+
       const res = await launchCamera(options);
       if (res.didCancel) return;
+
       if (res.errorCode) {
-        onError(res.errorMessage || res.errorCode);
+        onError(res.errorMessage || t('camera.launchFailed'));
         return;
       }
+
       const asset = res.assets?.[0];
       if (asset?.uri) onCaptured(asset);
-    } catch (e: any) {
-      onError(String(e?.message ?? e));
+    } catch {
+      onError(t('camera.launchFailed'));
     }
   };
 

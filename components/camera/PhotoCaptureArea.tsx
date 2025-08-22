@@ -1,3 +1,4 @@
+// components/camera/PhotoCaptureArea.tsx
 import React from 'react';
 import {
   View,
@@ -8,6 +9,7 @@ import {
 } from 'react-native';
 import type { Asset } from 'react-native-image-picker';
 import CameraCaptureButton from './CameraCaptureButton';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
   photo?: Asset | null;                // 표시할 사진
@@ -24,6 +26,8 @@ export default function PhotoCaptureArea({
   height = 160,
   style,
 }: Props) {
+  const { t } = useTranslation();
+
   return (
     <View style={[styles.box, { height }, style]}>
       {photo?.uri ? (
@@ -35,7 +39,7 @@ export default function PhotoCaptureArea({
             size={20}
             disabled={disabled}
             onCaptured={(asset) => asset?.uri && onChange(asset)}
-            onError={(msg) => Alert.alert('카메라 오류', msg)}
+            onError={(msg) => Alert.alert(t('camera.errorTitle'), msg)}
           />
         </>
       ) : (
@@ -45,7 +49,7 @@ export default function PhotoCaptureArea({
             size={36}
             disabled={disabled}
             onCaptured={(asset) => asset?.uri && onChange(asset)}
-            onError={(msg) => Alert.alert('카메라 오류', msg)}
+            onError={(msg) => Alert.alert(t('camera.errorTitle'), msg)}
           />
         </View>
       )}
@@ -65,15 +69,13 @@ const styles = StyleSheet.create({
     marginBottom: 14,
   },
   image: { width: '100%', height: '100%' },
-  
   bottomRight: { position: 'absolute', right: 10, bottom: 10 },
   fullBackground: {
     flex: 1,
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.05)', // 원하는 배경색
+    backgroundColor: 'rgba(0,0,0,0.05)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
 });

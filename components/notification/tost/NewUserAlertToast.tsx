@@ -1,8 +1,19 @@
-//토스트
+// components/notification/NewUserAlertToast.tsx
+// 토스트 (새 사용자 신고가 생성될 때 상단에 잠깐 뜨는 UI)
 
 import React, { useEffect, useRef, useState } from 'react';
 import TopUserToast from './TopUserToast';
 import { useAlerts } from '../alertsStore';
+import type { Severity } from '../alertsStore';
+
+function iconFor(sev?: Severity) {
+  switch (sev) {
+    case 'red': return '🔴';
+    case 'orange': return '🟠';
+    case 'yellow': return '🟡';
+    default: return '🟡';
+  }
+}
 
 export default function NewUserAlertToast() {
   const { lastUserAlert, consumeLastUserAlert } = useAlerts();
@@ -15,40 +26,34 @@ export default function NewUserAlertToast() {
     if (lastUserAlert) {
       setExpanded(false);
       setVisible(true);
-
-      // 자동 닫힘(확장 전) 5초
+      // 3.5초 뒤 자동 닫힘
       if (hideTimer.current) clearTimeout(hideTimer.current);
       hideTimer.current = setTimeout(() => {
         setVisible(false);
-        // 애니메이션 종료 후 컨슘
-        setTimeout(consumeLastUserAlert, 250);
-      }, 5000);
+        consumeLastUserAlert();
+      }, 5500);
     }
     return () => {
       if (hideTimer.current) clearTimeout(hideTimer.current);
     };
   }, [lastUserAlert, consumeLastUserAlert]);
 
-  const onToggle = () => {
-    setExpanded((e) => !e);
-    // 펼친 상태에선 자동 닫힘 취소
-    if (!expanded && hideTimer.current) {
-      clearTimeout(hideTimer.current);
-      hideTimer.current = null;
-    }
-  };
-
+  const onToggle = () => setExpanded((v) => !v);
   const onClose = () => {
+    if (hideTimer.current) clearTimeout(hideTimer.current);
     setVisible(false);
-    setTimeout(consumeLastUserAlert, 250);
+    consumeLastUserAlert();
   };
 
   if (!lastUserAlert) return null;
 
+  // ✅ 제목 앞에 위험도 아이콘 프리픽스 추가
+  const prefixedTitle = `${iconFor(lastUserAlert.severity)} ${lastUserAlert.title}`;
+
   return (
     <TopUserToast
       visible={visible}
-      title={lastUserAlert.title}
+      title={prefixedTitle}
       photoUri={lastUserAlert.photoUri}
       expanded={expanded}
       onToggle={onToggle}

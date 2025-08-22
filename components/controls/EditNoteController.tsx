@@ -6,6 +6,7 @@ import EditModal from '../modals/EditModal';
 import NotificationSidebar from '../notification/side/NotificationSidebar';
 import AlertsPanel from '../notification/side/AlertsPanel';
 import NewUserAlertToast from '../notification/tost/NewUserAlertToast';
+import { useTranslation } from 'react-i18next';
 
 const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
@@ -13,16 +14,21 @@ export default function EditNoteController() {
   const [visible, setVisible] = useState(false);
   const [note, setNote] = useState('');
   const [notiOpen, setNotiOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <View style={{ flex: 1 }}>
+      {/* title을 넘기지 않으면 NavigationBar 내부에서 t('app.title') 사용 */}
       <NavigationBar
-        title="FloodGuard"
         onPressPencil={() => setVisible(true)}
         onPressBell={() => setNotiOpen(true)}
       />
 
-      <NotificationSidebar visible={notiOpen} onClose={() => setNotiOpen(false)} title="알림">
+      <NotificationSidebar
+        visible={notiOpen}
+        onClose={() => setNotiOpen(false)}
+        title={t('alerts.title')}
+      >
         <AlertsPanel />
       </NotificationSidebar>
 

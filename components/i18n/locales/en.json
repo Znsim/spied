@@ -1,0 +1,93 @@
+{
+  "app": { "title": "FloodGuard" },
+
+  "nav": {
+    "pencilLabel": "Open report modal",
+    "pencilHint": "Create a new user report",
+    "bellLabel": "Open alerts",
+    "bellHint": "Show alerts sidebar"
+  },
+
+  "common": {
+    "close": "Close",
+    "cancel": "Cancel",
+    "upload": "Upload",
+    "preview": "Preview"
+  },
+
+  "edit": {
+    "uploadTitle": "Upload",
+    "currentLocation": "Current location",
+    "inputPlaceholder": "Enter a description",
+    "severity": "Severity"
+  },
+
+  "alerts": {
+    "title": "Alerts",
+    "userReportDefaultTitle": "User report",
+    "tabs": {
+      "userReports": "User reports",
+      "systemReports": "System"
+    },
+
+    "systemEmptyTitle": "System alerts area",
+    "systemEmptyDesc": "App-provided notices/warnings will appear here.\n(For demo) Tap the button below to view demo alerts.",
+    "showDemo": "Show demo alerts",
+    "demoBadge": "Demo data",
+    "hide": "Hide",
+
+    "demo": {
+      "floodWarningTitle": "Flood warning (demo)",
+      "floodWarningSubtitle": "Jungmun Intersection",
+      "slowDownTitle": "Slow down advisory (demo)",
+      "slowDownSubtitle": "Road in front of the gym",
+      "drainWorkTitle": "Drainage work in progress (demo)",
+      "drainWorkSubtitle": "Dormitory Building A"
+    },
+
+    "tapToZoom": "Tap to zoom",
+
+    "timeAgo": {
+      "justNow": "Just now",
+      "m": "{{count}} min ago",
+      "h": "{{count}} hr ago",
+      "hHalf": "{{h}} hr {{half}} min ago",
+      "d": "{{count}} days ago"
+    }
+  },
+
+  "toast": {
+    "noPhoto": "No photo attached"
+  },
+
+  "camera": {
+    "permission": { "denied": "Please allow camera/photo permissions in Settings." },
+    "launchFailed": "Failed to launch the camera.",
+    "errorTitle": "Camera error"
+  },
+
+  "map": {
+    "myLocation": "My location",
+    "moveApiMissing": "Could not find a camera move API for this MapView."
+  },
+
+  "guide": {
+    "title": "(Urgent Notice) Marker Guide",
+    "sub": "This map uses three main markers.\nPlease read the risk criteria for each color and then use the user report feature.",
+    "dontShowAgain": "Don't show again?",
+    "rows": {
+      "red": {
+        "title": "3-hour accumulated rainfall ≥ 100 mm",
+        "desc": ["River/road above knee depth", "Roads may be completely submerged"]
+      },
+      "orange": {
+        "title": "3-hour accumulated rainfall ≥ 50 mm",
+        "desc": ["Water may rise up to below the knee", "Bottom of stairs, low sidewalks, etc."]
+      },
+      "yellow": {
+        "title": "6-hour accumulated rainfall ≥ 50 mm",
+        "desc": ["Typically ankle or below without an umbrella", "Only light splashing level"]
+      }
+    }
+  }
+}

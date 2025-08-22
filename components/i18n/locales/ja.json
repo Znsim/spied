@@ -1,0 +1,93 @@
+{
+  "app": { "title": "FloodGuard" },
+
+  "nav": {
+    "pencilLabel": "通報モーダルを開く",
+    "pencilHint": "新しいユーザー通報を作成",
+    "bellLabel": "通知を開く",
+    "bellHint": "通知サイドバーを表示"
+  },
+
+  "common": {
+    "close": "閉じる",
+    "cancel": "キャンセル",
+    "upload": "アップロード",
+    "preview": "プレビュー"
+  },
+
+  "edit": {
+    "uploadTitle": "アップロード",
+    "currentLocation": "現在地",
+    "inputPlaceholder": "説明を入力してください",
+    "severity": "危険度"
+  },
+
+  "alerts": {
+    "title": "通知",
+    "userReportDefaultTitle": "ユーザー通報",
+    "tabs": {
+      "userReports": "ユーザー通報",
+      "systemReports": "アプリ提供"
+    },
+
+    "systemEmptyTitle": "アプリ提供の通知エリア",
+    "systemEmptyDesc": "ここにアプリからの告知／警報が表示されます。\n（デモ用）下のボタンでデモ通知を確認できます。",
+    "showDemo": "デモ通知を表示",
+    "demoBadge": "デモデータ",
+    "hide": "非表示",
+
+    "demo": {
+      "floodWarningTitle": "浸水警報（デモ）",
+      "floodWarningSubtitle": "中門交差点",
+      "slowDownTitle": "徐行の推奨（デモ）",
+      "slowDownSubtitle": "体育館前の道路",
+      "drainWorkTitle": "排水作業中（デモ）",
+      "drainWorkSubtitle": "寮A棟"
+    },
+
+    "tapToZoom": "タップして拡大",
+
+    "timeAgo": {
+      "justNow": "たった今",
+      "m": "{{count}}分前",
+      "h": "{{count}}時間前",
+      "hHalf": "{{h}}時間{{half}}分前",
+      "d": "{{count}}日前"
+    }
+  },
+
+  "toast": {
+    "noPhoto": "写真が添付されていません"
+  },
+
+  "camera": {
+    "permission": { "denied": "設定でカメラ／写真の権限を許可してください。" },
+    "launchFailed": "カメラの起動に失敗しました。",
+    "errorTitle": "カメラエラー"
+  },
+
+  "map": {
+    "myLocation": "現在地",
+    "moveApiMissing": "この MapView でカメラ移動APIが見つかりません。"
+  },
+
+  "guide": {
+    "title": "（緊急告知）マーカー説明",
+    "sub": "この地図では主に3種類のマーカーを使用します。\n色ごとの危険度基準を確認し、理解した上で通報機能をご利用ください。",
+    "dontShowAgain": "今後表示しない",
+    "rows": {
+      "red": {
+        "title": "3時間累積降雨量 ≥ 100 mm",
+        "desc": ["河川／道路が膝上の深さ", "車道・道路が完全に冠水するレベル"]
+      },
+      "orange": {
+        "title": "3時間累積降雨量 ≥ 50 mm",
+        "desc": ["膝下まで水位が上がる可能性", "階段下部・低い歩道など"]
+      },
+      "yellow": {
+        "title": "6時間累積降雨量 ≥ 50 mm",
+        "desc": ["通常、傘なしで足首以下", "水はねが軽い程度"]
+      }
+    }
+  }
+}
