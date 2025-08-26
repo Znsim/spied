@@ -42,26 +42,21 @@
 
 ## 🖼 앱 화면 미리보기
 
-## 🖼 앱 화면 미리보기
+<table align="center">
+  <tr>
+    <th>첫 화면</th>
+    <th>내 위치 이동</th>
+    <th>신고 작성</th>
+    <th>위험 안내</th>
+  </tr>
+  <tr>
+    <td><img src="./img/first_screen.png" height="420"></td>
+    <td><img src="./img/Mylocation.png" height="420"></td>
+    <td><img src="./img/report.png" height="420"></td>
+    <td><img src="./img/DangerImg.png" height="420"></td>
+  </tr>
+</table>
 
-<p align="center">
-  <table>
-    <tr>
-      <th>첫 화면</th>
-      <th>내 위치 이동</th>
-      <th>신고 작성</th>
-      <th>위험 안내</th>
-    </tr>
-    <tr>
-      <td><img src="./img/first_screen.png" alt="first" height="400"></td>
-      <td><img src="./img/Mylocation.png" alt="mylocation" height="400"></td>
-      <td><img src="./img/report.png" alt="report" height="400"></td>
-      <td><img src="./img/DangerImg.png" alt="danger" height="400"></td>
-    </tr>
-  </table>
-</p>
-
----
 
 ## 🏃 실행 방법
 ```bash
