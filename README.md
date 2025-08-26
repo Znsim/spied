@@ -42,9 +42,9 @@
 
 ## 🖼 앱 화면 미리보기
 
-| 홈 화면 | 위험도 안내 | 사용자 신고 |
-|---------|-------------|-------------|
-| ![map](./assets/screenshot1.png) | ![guide](./assets/screenshot2.png) | ![report](./assets/screenshot3.png) |
+| 첫 화면 | 내 위치 이동 | 신고 작성 | 위험 안내 |
+|:--:|:--:|:--:|:--:|
+| ![first_screen](./img/first_screen.png) | ![mylocation](./img/Mylocation.png) | ![report](./img/report.png) | ![danger](./img/DangerImg.png) |
 
 ---
 
@@ -54,6 +54,9 @@
 npm install
 
 # Android 실행
+cd android
+./gradlew clean
+cd ..
 npx react-native run-android
 
 # iOS (Mac 환경)
