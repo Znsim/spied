@@ -7,6 +7,19 @@
     "bellLabel": "알림 열기",
     "bellHint": "알림 사이드바 표시"
   },
+  
+  "edit": {
+    "inputLabel": "설명",
+    "inputPlaceholderShort": "최대 15자 입력 가능",
+    "charCounter": "{{count}}/{{max}}",
+    "charCounterA11y": "{{count}} / {{max}} 글자",
+    "needPhoto": "사진을 추가해 주세요",
+
+    "uploadTitle": "업로드",
+    "currentLocation": "현 위치",
+    "inputPlaceholder": "설명을 입력하세요",
+    "severity": "위험도"
+  },
 
   "common": {
     "close": "닫기",
@@ -15,40 +28,33 @@
     "preview": "미리보기"
   },
 
-  "edit": {
-    "uploadTitle": "업로드",
-    "currentLocation": "현 위치",
-    "inputPlaceholder": "설명을 입력하세요",
-    "severity": "위험도"
-  },
-
   "alerts": {
     "title": "알림",
     "userReportDefaultTitle": "사용자 신고",
     "tabs": {
       "userReports": "사용자 신고",
-      "systemReports": "앱 제공"
+      "systemReports": "시스템"
     },
 
-    "systemEmptyTitle": "앱 제공 알림 영역",
-    "systemEmptyDesc": "여기에 앱에서 제공하는 공지/경보가 표시됩니다.\n(시연용) 아래 버튼을 눌러 데모 알림을 볼 수 있어요.",
+    "systemEmptyTitle": "시스템 알림 영역",
+    "systemEmptyDesc": "여기에 앱에서 제공하는 공지/경보가 표시됩니다.\n(시연용) 아래 버튼을 눌러 데모 알림을 확인하세요.",
     "showDemo": "데모 알림 보기",
-    "demoBadge": "시연용 데모 데이터",
+    "demoBadge": "데모 데이터",
     "hide": "숨기기",
 
     "demo": {
-      "floodWarningTitle": "침수 경보(시범)",
-      "floodWarningSubtitle": "중문 교차로",
-      "slowDownTitle": "서행 권고(시범)",
+      "floodWarningTitle": "침수 경보 (데모)",
+      "floodWarningSubtitle": "정문 교차로",
+      "slowDownTitle": "서행 권고 (데모)",
       "slowDownSubtitle": "체육관 앞 도로",
-      "drainWorkTitle": "배수 작업 중(시범)",
+      "drainWorkTitle": "배수 공사 중 (데모)",
       "drainWorkSubtitle": "기숙사 A동"
     },
 
     "tapToZoom": "탭하여 확대",
 
     "timeAgo": {
-      "justNow": "방금",
+      "justNow": "방금 전",
       "m": "{{count}}분 전",
       "h": "{{count}}시간 전",
       "hHalf": "{{h}}시간 {{half}}분 전",
@@ -57,37 +63,55 @@
   },
 
   "toast": {
-    "noPhoto": "첨부된 사진이 없습니다"
+    "noPhoto": "사진이 첨부되지 않았습니다"
   },
 
   "camera": {
-    "permission": { "denied": "설정에서 카메라/사진 권한을 허용해주세요." },
-    "launchFailed": "카메라 실행에 실패했어요.",
+    "permission": { "denied": "설정에서 카메라/사진 권한을 허용해 주세요." },
+    "launchFailed": "카메라 실행에 실패했습니다.",
     "errorTitle": "카메라 오류"
   },
 
   "map": {
     "myLocation": "내 위치",
-    "moveApiMissing": "이 MapView에서 카메라 이동 API를 찾지 못했습니다."
+    "moveApiMissing": "이 MapView에서 카메라 이동 API를 찾을 수 없습니다."
   },
 
   "guide": {
-    "title": "(긴급공지) 마커설명",
-    "sub": "다음은 이 지도에서 사용하는 3가지 주된 마커입니다.\n각 색상 별 위험도 기준을 읽고, 숙지 후 사용자 신고 기능을 사용하시길 권장합니다.",
-    "dontShowAgain": "다신 안 보시겠습니까?",
+    "title": "(긴급 안내) 마커 가이드",
+    "sub": "이 지도는 세 가지 주요 마커를 사용합니다.\n각 색상별 위험 기준을 읽고 사용자 신고 기능을 활용해 주세요.",
+    "dontShowAgain": "다시 보지 않기",
     "rows": {
       "red": {
-        "title": "3시간 누적 강수 ≥ 100 mm",
-        "desc": ["하천/도로 무릎 깊이 이상", "차도, 도로가 완전히 잠길 수준"]
+        "title": "3시간 누적 강수량 ≥ 100mm",
+        "desc": ["하천/도로 무릎 이상", "도로 전면 침수 가능"]
       },
       "orange": {
-        "title": "3시간 누적 강수 ≥ 50 mm",
-        "desc": ["무릎 아래 정도까지 물이 차오를 수 있음", "계단 하단, 낮은 보도 등"]
+        "title": "3시간 누적 강수량 ≥ 50mm",
+        "desc": ["무릎 아래까지 물이 차오를 수 있음", "계단 밑, 낮은 보도 등"]
       },
       "yellow": {
-        "title": "6시간 누적 강수 ≥ 50 mm",
-        "desc": ["보통 우산 없이 발목 아래 정도", "가볍게 물이 튀는 수준"]
+        "title": "6시간 누적 강수량 ≥ 50mm",
+        "desc": ["보통 발목 이하, 우산 필요 없음", "가벼운 물튀김 수준"]
       }
     }
+  },
+
+  "autoPonding": {
+    "title": "자동 침수 감지",
+    "subtitle": "{{lat}}, {{lon}} / {{rain}} mm/h"
+  },
+
+  "severity": { 
+    "red": "심각",
+    "orange": "보통",
+    "yellow": "경미" 
+  },
+
+  "forecast": {
+    "autoTitle": "자동 예측 침수 위험",
+    "autoSubtitle": "예측 위험도: {{severity}}",
+    "errorTitle": "예측 실패",
+    "errorSubtitle": "서버 응답 없음"
   }
 }

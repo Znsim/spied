@@ -1,4 +1,11 @@
 // components/notification/tost/TopUserToast.tsx
+// ────────────────────────────────────────────────
+// 목적
+//   - 사용자가 새로 신고(리포트)를 작성하면 상단에 토스트로 잠깐 표시
+//   - 제목, 위험도 색 점, 닫기 버튼 포함
+//   - 눌러서 확장 시: 신고 사진을 미리보기 (없으면 "사진 없음" 문구)
+// ────────────────────────────────────────────────
+
 import React, { useEffect, useRef } from 'react';
 import {
   Animated,
@@ -11,20 +18,21 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
-// 앱에서 쓰는 Severity 타입과 맞춰주세요.
-// 필요 시 import type { Severity } from '../../notification/alertsStore';
+// 앱의 Severity 타입 정의 (위험도 단계)
 type Severity = 'red' | 'orange' | 'yellow';
 
+// props 타입 정의
 type Props = {
-  visible: boolean;
-  title: string;
-  photoUri?: string;
-  expanded: boolean;
-  severity?: Severity;         // ✅ 추가: 위험도
-  onToggle: () => void;
-  onClose: () => void;
+  visible: boolean;        // 보일지 여부
+  title: string;           // 신고 제목
+  photoUri?: string;       // 신고 사진 (선택)
+  expanded: boolean;       // 확장 모드 여부
+  severity?: Severity;     // 위험도 (빨강/주황/노랑)
+  onToggle: () => void;    // 토스트 전체를 눌렀을 때(확장/축소 토글)
+  onClose: () => void;     // 닫기 버튼 눌렀을 때
 };
 
+// 위험도 색상 매핑
 const SEVERITY_COLOR: Record<Severity, string> = {
   red: '#ef4444',
   orange: '#f97316',
@@ -40,13 +48,14 @@ export default function TopUserToast({
   onToggle,
   onClose,
 }: Props) {
-  const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets(); // 상태바 높이 확보
   const { t } = useTranslation();
-  const y = useRef(new Animated.Value(-120)).current;
+  const y = useRef(new Animated.Value(-120)).current; // Y 위치 애니메이션 초기값
 
+  // visible 값이 바뀔 때마다 슬라이드 애니메이션 실행
   useEffect(() => {
     Animated.timing(y, {
-      toValue: visible ? 0 : -140,
+      toValue: visible ? 0 : -140, // 보이면 0 (화면 안), 숨기면 -140 (화면 위)
       duration: 220,
       useNativeDriver: true,
     }).start();
@@ -62,10 +71,10 @@ export default function TopUserToast({
         pointerEvents="box-none"
         accessibilityRole="alert"
       >
-        {/* 카드 전체 탭 → 확장/축소 */}
+        {/* 카드 전체 탭 → 확장/축소 토글 */}
         <Pressable style={styles.card} onPress={onToggle}>
           <View style={styles.header}>
-            {/* ✅ 위험도 점 아이콘(있을 때만) */}
+            {/* 위험도 점 (severity 있을 때만 표시) */}
             {severity ? (
               <View
                 style={[
@@ -75,11 +84,12 @@ export default function TopUserToast({
               />
             ) : null}
 
+            {/* 제목 */}
             <Text style={styles.title} numberOfLines={1}>
               {title}
             </Text>
 
-            {/* 닫기 버튼 */}
+            {/* 닫기 버튼 (✖️) */}
             <Pressable
               onPress={onClose}
               hitSlop={8}
@@ -91,11 +101,13 @@ export default function TopUserToast({
             </Pressable>
           </View>
 
-          {/* 확장 영역: 사진 또는 '없음' 문구 */}
+          {/* 확장 모드일 때만 아래 표시 */}
           {expanded &&
             (photoUri ? (
+              // 사진이 있으면 미리보기
               <Image source={{ uri: photoUri }} style={styles.preview} />
             ) : (
+              // 없으면 안내 문구
               <Text style={styles.noPhoto}>{t('toast.noPhoto')}</Text>
             ))}
         </Pressable>
@@ -104,6 +116,7 @@ export default function TopUserToast({
   );
 }
 
+// 스타일 정의
 const styles = StyleSheet.create({
   wrap: {
     position: 'absolute',
@@ -117,7 +130,7 @@ const styles = StyleSheet.create({
   card: {
     maxWidth: 360,
     width: '88%',
-    backgroundColor: '#111827',
+    backgroundColor: '#111827', // 어두운 배경
     borderRadius: 14,
     paddingHorizontal: 12,
     paddingVertical: 10,
@@ -129,8 +142,7 @@ const styles = StyleSheet.create({
   },
   header: { flexDirection: 'row', alignItems: 'center' },
   dot: {
-    width: 10,
-    height: 10,
+    width: 10, height: 10,
     borderRadius: 5,
     marginRight: 8,
   },

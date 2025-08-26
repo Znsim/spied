@@ -8,6 +8,18 @@
     "bellHint": "通知サイドバーを表示"
   },
 
+  "edit": {
+    "uploadTitle": "アップロード",
+    "currentLocation": "現在地",
+    "inputLabel": "説明",
+    "inputPlaceholder": "説明を入力してください",
+    "inputPlaceholderShort": "15文字以内",
+    "charCounter": "{{count}}/{{max}}",
+    "charCounterA11y": "{{max}}文字中{{count}}文字入力済み",
+    "severity": "危険度",
+    "needPhoto": "写真を追加してください"
+  },
+
   "common": {
     "close": "閉じる",
     "cancel": "キャンセル",
@@ -15,33 +27,26 @@
     "preview": "プレビュー"
   },
 
-  "edit": {
-    "uploadTitle": "アップロード",
-    "currentLocation": "現在地",
-    "inputPlaceholder": "説明を入力してください",
-    "severity": "危険度"
-  },
-
   "alerts": {
     "title": "通知",
     "userReportDefaultTitle": "ユーザー通報",
     "tabs": {
       "userReports": "ユーザー通報",
-      "systemReports": "アプリ提供"
+      "systemReports": "システム"
     },
 
-    "systemEmptyTitle": "アプリ提供の通知エリア",
-    "systemEmptyDesc": "ここにアプリからの告知／警報が表示されます。\n（デモ用）下のボタンでデモ通知を確認できます。",
-    "showDemo": "デモ通知を表示",
+    "systemEmptyTitle": "システム通知エリア",
+    "systemEmptyDesc": "アプリからの通知/警告がここに表示されます。\n（デモ用）下のボタンをタップしてデモ通知を確認してください。",
+    "showDemo": "デモ通知を見る",
     "demoBadge": "デモデータ",
     "hide": "非表示",
 
     "demo": {
-      "floodWarningTitle": "浸水警報（デモ）",
-      "floodWarningSubtitle": "中門交差点",
-      "slowDownTitle": "徐行の推奨（デモ）",
+      "floodWarningTitle": "洪水警報（デモ）",
+      "floodWarningSubtitle": "チュンムン交差点",
+      "slowDownTitle": "減速勧告（デモ）",
       "slowDownSubtitle": "体育館前の道路",
-      "drainWorkTitle": "排水作業中（デモ）",
+      "drainWorkTitle": "排水工事中（デモ）",
       "drainWorkSubtitle": "寮A棟"
     },
 
@@ -61,33 +66,47 @@
   },
 
   "camera": {
-    "permission": { "denied": "設定でカメラ／写真の権限を許可してください。" },
+    "permission": { "denied": "設定でカメラ/写真の許可をしてください。" },
     "launchFailed": "カメラの起動に失敗しました。",
     "errorTitle": "カメラエラー"
   },
 
   "map": {
     "myLocation": "現在地",
-    "moveApiMissing": "この MapView でカメラ移動APIが見つかりません。"
+    "moveApiMissing": "このMapViewのカメラ移動APIが見つかりませんでした。"
   },
 
   "guide": {
-    "title": "（緊急告知）マーカー説明",
-    "sub": "この地図では主に3種類のマーカーを使用します。\n色ごとの危険度基準を確認し、理解した上で通報機能をご利用ください。",
+    "title": "（緊急通知）マーカーガイド",
+    "sub": "この地図では3種類のマーカーを使用します。\n色ごとのリスク基準を確認してからユーザー通報機能を利用してください。",
     "dontShowAgain": "今後表示しない",
     "rows": {
       "red": {
-        "title": "3時間累積降雨量 ≥ 100 mm",
-        "desc": ["河川／道路が膝上の深さ", "車道・道路が完全に冠水するレベル"]
+        "title": "3時間累積降水量 ≥ 100 mm",
+        "desc": ["川/道路が膝以上浸水", "道路完全浸水の可能性"]
       },
       "orange": {
-        "title": "3時間累積降雨量 ≥ 50 mm",
-        "desc": ["膝下まで水位が上がる可能性", "階段下部・低い歩道など"]
+        "title": "3時間累積降水量 ≥ 50 mm",
+        "desc": ["膝下まで浸水の可能性", "階段下、低い歩道など"]
       },
       "yellow": {
-        "title": "6時間累積降雨量 ≥ 50 mm",
-        "desc": ["通常、傘なしで足首以下", "水はねが軽い程度"]
+        "title": "6時間累積降水量 ≥ 50 mm",
+        "desc": ["くるぶし以下の軽い水たまり", "軽い水しぶきレベル"]
       }
     }
+  },
+
+  "autoPonding": {
+    "title": "自動水たまり検知",
+    "subtitle": "{{lat}}, {{lon}} / {{rain}} mm/h"
+  },
+
+  "severity": { "red": "深刻", "orange": "中程度", "yellow": "軽度" },
+
+  "forecast": {
+    "autoTitle": "自動予測洪水リスク",
+    "autoSubtitle": "予測危険度: {{severity}}",
+    "errorTitle": "予測失敗",
+    "errorSubtitle": "サーバー応答なし"
   }
 }

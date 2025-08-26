@@ -7,6 +7,14 @@
     "bellLabel": "Open alerts",
     "bellHint": "Show alerts sidebar"
   },
+  
+  "edit": {
+    "inputLabel": "Description",
+    "inputPlaceholderShort": "Up to 15 characters",
+    "charCounter": "{{count}}/{{max}}",
+    "charCounterA11y": "{{count}} of {{max}} characters",
+    "needPhoto": "Please add a photo"
+  },
 
   "common": {
     "close": "Close",
@@ -89,5 +97,17 @@
         "desc": ["Typically ankle or below without an umbrella", "Only light splashing level"]
       }
     }
+  },
+  "autoPonding": {
+    "title": "Auto ponding detection",
+    "subtitle": "{{lat}}, {{lon}} / {{rain}} mm/h"
+  },
+  "severity": { "red": "Severe", "orange": "Moderate", "yellow": "Mild" },
+  "forecast": {
+    "autoTitle": "Automatic predicted flood risk",
+    "autoSubtitle": "Predicted severity: {{severity}}",
+    "errorTitle": "Prediction failed",
+    "errorSubtitle": "No server response"
   }
+  
 }

@@ -2,10 +2,22 @@
   "app": { "title": "FloodGuard" },
 
   "nav": {
-    "pencilLabel": "打开上报弹窗",
-    "pencilHint": "创建新的用户上报",
+    "pencilLabel": "打开举报窗口",
+    "pencilHint": "创建新的用户举报",
     "bellLabel": "打开通知",
     "bellHint": "显示通知侧边栏"
+  },
+
+  "edit": {
+    "uploadTitle": "上传",
+    "currentLocation": "当前位置",
+    "inputLabel": "描述",
+    "inputPlaceholder": "请输入描述",
+    "inputPlaceholderShort": "最多15个字符",
+    "charCounter": "{{count}}/{{max}}",
+    "charCounterA11y": "共{{max}}字符，已输入{{count}}字符",
+    "severity": "严重程度",
+    "needPhoto": "请添加照片"
   },
 
   "common": {
@@ -15,79 +27,86 @@
     "preview": "预览"
   },
 
-  "edit": {
-    "uploadTitle": "上传",
-    "currentLocation": "当前位置",
-    "inputPlaceholder": "请输入说明",
-    "severity": "严重程度"
-  },
-
   "alerts": {
     "title": "通知",
-    "userReportDefaultTitle": "用户上报",
+    "userReportDefaultTitle": "用户举报",
     "tabs": {
-      "userReports": "用户上报",
-      "systemReports": "系统提供"
+      "userReports": "用户举报",
+      "systemReports": "系统"
     },
 
     "systemEmptyTitle": "系统通知区域",
-    "systemEmptyDesc": "这里将显示应用提供的公告/预警。\n（演示用）点击下方按钮可查看演示通知。",
-    "showDemo": "查看演示通知",
-    "demoBadge": "演示数据",
+    "systemEmptyDesc": "应用提供的通知/警报将在此显示。\n（演示）点击下面按钮查看示例通知。",
+    "showDemo": "显示示例通知",
+    "demoBadge": "示例数据",
     "hide": "隐藏",
 
     "demo": {
-      "floodWarningTitle": "内涝/积水预警（演示）",
-      "floodWarningSubtitle": "中门交叉口",
-      "slowDownTitle": "减速通行建议（演示）",
+      "floodWarningTitle": "洪水警报（示例）",
+      "floodWarningSubtitle": "中门十字路口",
+      "slowDownTitle": "减速提示（示例）",
       "slowDownSubtitle": "体育馆前道路",
-      "drainWorkTitle": "排水作业中（演示）",
+      "drainWorkTitle": "排水施工中（示例）",
       "drainWorkSubtitle": "宿舍A栋"
     },
 
-    "tapToZoom": "轻触放大",
+    "tapToZoom": "点击放大",
 
     "timeAgo": {
       "justNow": "刚刚",
-      "m": "{{count}} 分钟前",
-      "h": "{{count}} 小时前",
-      "hHalf": "{{h}} 小时 {{half}} 分钟前",
-      "d": "{{count}} 天前"
+      "m": "{{count}}分钟前",
+      "h": "{{count}}小时前",
+      "hHalf": "{{h}}小时{{half}}分钟前",
+      "d": "{{count}}天前"
     }
   },
 
   "toast": {
-    "noPhoto": "没有附加照片"
+    "noPhoto": "未附加照片"
   },
 
   "camera": {
     "permission": { "denied": "请在设置中允许相机/照片权限。" },
-    "launchFailed": "相机启动失败。",
+    "launchFailed": "启动相机失败。",
     "errorTitle": "相机错误"
   },
 
   "map": {
     "myLocation": "我的位置",
-    "moveApiMissing": "未找到此 MapView 的相机移动 API。"
+    "moveApiMissing": "未找到此MapView的相机移动API。"
   },
 
   "guide": {
-    "title": "（紧急公告）标记说明",
-    "sub": "本地图使用三种主要标记。\n建议先阅读各颜色的风险标准，再使用用户上报功能。",
-    "dontShowAgain": "不再显示？",
+    "title": "（紧急通知）标记指南",
+    "sub": "此地图使用三种主要标记。\n请先阅读各颜色的风险标准，然后使用用户举报功能。",
+    "dontShowAgain": "不再显示",
     "rows": {
       "red": {
-        "title": "3小时累计降雨 ≥ 100 mm",
-        "desc": ["河道/道路高于膝盖深度", "车道、道路可能完全被淹"]
+        "title": "3小时累计降水量 ≥ 100毫米",
+        "desc": ["河流/道路膝盖以上积水", "道路可能完全被淹没"]
       },
       "orange": {
-        "title": "3小时累计降雨 ≥ 50 mm",
-        "desc": ["可能涨到膝盖以下", "楼梯底部、低洼人行道等"]
+        "title": "3小时累计降水量 ≥ 50毫米",
+        "desc": ["可能淹到膝盖以下", "楼梯底部、低洼人行道等"]
       },
       "yellow": {
-        "title": "6小时累计降雨 ≥ 50 mm",
-        "desc": ["一般不用伞时低于脚踝", "仅有轻微溅水程度"]
+        "title": "6小时累计降水量 ≥ 50毫米",
+        "desc": ["通常低于脚踝的轻微积水", "仅溅水程度"]
       }
     }
+  },
+
+  "autoPonding": {
+    "title": "自动积水检测",
+    "subtitle": "{{lat}}, {{lon}} / {{rain}} mm/h"
+  },
+
+  "severity": { "red": "严重", "orange": "中等", "yellow": "轻微" },
+
+  "forecast": {
+    "autoTitle": "自动预测洪水风险",
+    "autoSubtitle": "预测严重程度: {{severity}}",
+    "errorTitle": "预测失败",
+    "errorSubtitle": "无服务器响应"
   }
 }

@@ -1,4 +1,17 @@
 // components/notification/side/NotificationSidebar.tsx
+// ────────────────────────────────────────────────
+// 목적
+//  - 화면 오른쪽에서 슬라이드 애니메이션으로 열리고 닫히는 알림 사이드바 패널
+//  - 바깥(검은 영역)을 클릭하면 닫히고, 상단에는 제목 + 가이드버튼 + 닫기 버튼이 표시됨
+//
+// Props
+//  - visible: 현재 보이는 상태 (true/false)
+//  - onClose: 닫기 동작 실행 함수
+//  - title: 헤더 제목 (없으면 i18n 기본값 사용)
+//  - width: 패널 너비 (기본 85% 화면, 최대 360px)
+//  - children: 본문에 표시할 ReactNode (알림 리스트 등)
+// ────────────────────────────────────────────────
+
 import React, { useEffect, useMemo, useRef } from 'react';
 import {
   Animated,
@@ -14,16 +27,12 @@ import { useTranslation } from 'react-i18next';
 import GuideInfoButton from '../../modals/GuideInfoButton';
 
 type Props = {
-  visible: boolean;
-  onClose: () => void;
-  /** 외부에서 제목 문자열을 넘기면 그대로 사용, 없으면 i18n 기본값 사용 */
-  title?: string;
-  /** 사이드 패널 너비 (기본: 화면 85%, 최대 360) */
-  width?: number;
-  /** 본문 컨텐츠 */
-  children?: React.ReactNode;
-  /** 테스트 ID 접두사 */
-  testIDPrefix?: string;
+  visible: boolean;           // 보이는지 여부
+  onClose: () => void;        // 닫기 콜백
+  title?: string;             // 제목 (없으면 i18n 기본)
+  width?: number;             // 패널 너비
+  children?: React.ReactNode; // 패널 안에 표시할 내용
+  testIDPrefix?: string;      // 테스트 ID 접두사
 };
 
 export default function NotificationSidebar({
@@ -37,15 +46,17 @@ export default function NotificationSidebar({
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
 
-  // 제목: props.title이 없으면 i18n 키 사용
+  // 제목: props.title이 없으면 다국어 번역 키 사용
   const computedTitle = title ?? t('alerts.title', 'Notifications');
 
+  // 패널 너비 계산 (기본 화면 85%, 최대 360px)
   const screenW = Dimensions.get('window').width;
   const panelW = useMemo(
     () => Math.min(360, Math.round((width ?? screenW * 0.85))),
     [width, screenW]
   );
 
+  // 애니메이션 값 (0=숨김, 1=보임)
   const anim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -56,21 +67,24 @@ export default function NotificationSidebar({
     }).start();
   }, [visible, anim]);
 
+  // 오른쪽 → 왼쪽 슬라이드
   const translateX = anim.interpolate({
     inputRange: [0, 1],
     outputRange: [panelW, 0],
   });
+
+  // 뒷배경(검은 오버레이) 투명도
   const backdropOpacity = anim.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 0.35],
   });
 
-  // 문자열 children이 들어오면 자동으로 Text로 감싸기 (Text 오류 방지)
+  // children이 문자열이면 자동으로 <Text>로 감싸기 (React Native 오류 방지)
   const content = typeof children === 'string' ? <Text>{children}</Text> : children;
 
   return (
     <>
-      {/* 바깥 클릭 → 닫기 */}
+      {/* ▶ 바깥(검은 영역)을 누르면 닫힘 */}
       <TouchableWithoutFeedback onPress={onClose}>
         <Animated.View
           pointerEvents={visible ? 'auto' : 'none'}
@@ -81,6 +95,7 @@ export default function NotificationSidebar({
         />
       </TouchableWithoutFeedback>
 
+      {/* ▶ 실제 사이드 패널 */}
       <Animated.View
         pointerEvents={visible ? 'auto' : 'none'}
         style={[
@@ -96,15 +111,16 @@ export default function NotificationSidebar({
         accessibilityLabel={computedTitle}
         testID={`${testIDPrefix}.panel`}
       >
-        {/* 헤더 */}
+        {/* ── 헤더 영역 ── */}
         <View style={styles.header}>
+          {/* 제목 */}
           <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode="tail">
             {computedTitle}
           </Text>
 
-          {/* 오른쪽 컨트롤: 느낌표 버튼 + 닫기 */}
+          {/* 오른쪽 컨트롤 (가이드 버튼 + 닫기 버튼) */}
           <View style={styles.headerRight}>
-            {/* 가이드 다시보기 버튼 (원형 느낌표) */}
+            {/* 느낌표 버튼 (위험도 안내 모달 열기) */}
             <GuideInfoButton style={{ marginRight: 8 }} />
 
             {/* 닫기 버튼 */}
@@ -120,7 +136,7 @@ export default function NotificationSidebar({
           </View>
         </View>
 
-        {/* 본문 */}
+        {/* ── 본문 영역 ── */}
         <View style={{ flex: 1 }}>{content}</View>
       </Animated.View>
     </>

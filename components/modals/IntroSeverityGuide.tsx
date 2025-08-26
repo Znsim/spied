@@ -1,10 +1,24 @@
 // components/modals/IntroSeverityGuide.tsx
+// ──────────────────────────────────────────────────────────────
+// 목적
+//  - "위험도 선택 가이드" 모달을 띄워서 각 색상(빨강/주황/노랑)의 의미를 안내.
+// 특징
+//  - AsyncStorage를 활용해 "다시 보지 않기" 기능 지원.
+//  - 제어형(외부에서 visible을 직접 제어) / 비제어형(컴포넌트 내부 상태로 표시 여부 관리) 둘 다 가능.
+//  - i18n 번역 키를 사용해 다국어 지원.
+// ──────────────────────────────────────────────────────────────
+
 import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 
 const STORE_KEY = 'introGuideHidden.v1';
+
+/** ✅ 외부에서 호출해 저장된 '다시 보지 않기' 플래그를 초기화 */
+export async function resetIntroGuideHidden() {
+  await AsyncStorage.removeItem(STORE_KEY);
+}
 
 type Props = {
   /** 체크박스(다신 안 보기) 사용 여부 — 기본: 꺼짐 */
@@ -13,37 +27,56 @@ type Props = {
   controlledVisible?: boolean;
   /** 제어형일 때 닫기 콜백 */
   onRequestClose?: () => void;
+
+  /** ✅ 개발/테스트용: 마운트 시 저장된 '다시 보지 않기' 플래그를 지움(기본 false) */
+  devResetOnMount?: boolean;
 };
 
 export default function IntroSeverityGuide({
   rememberOption = false,
   controlledVisible,
   onRequestClose,
+  devResetOnMount = false,   // 기본은 off
 }: Props) {
   const { t } = useTranslation();
-  const [visible, setVisible] = useState(false);
-  const [dontShowAgain, setDontShowAgain] = useState(false);
+  const [visible, setVisible] = useState(false);       // 모달 표시 여부
+  const [dontShowAgain, setDontShowAgain] = useState(false); // "다시 보지 않기" 체크 상태
 
-  const isControlled = typeof controlledVisible === 'boolean';
+  const isControlled = typeof controlledVisible === 'boolean'; // 제어형 여부 판단
 
   useEffect(() => {
-    if (isControlled) {
-      setVisible(!!controlledVisible);
-      return;
-    }
     (async () => {
+      // 개발용 옵션: 항상 초기화
+      if (devResetOnMount) {
+        try { await AsyncStorage.removeItem(STORE_KEY); } catch {}
+      }
+
+      if (isControlled) {
+        // 외부에서 visible을 직접 제어
+        setVisible(!!controlledVisible);
+        return;
+      }
+
       if (rememberOption) {
-        const v = await AsyncStorage.getItem(STORE_KEY).catch(() => null);
-        setVisible(v !== '1');
+        // 저장된 값 확인 → '1'이면 숨김
+        try {
+          const v = await AsyncStorage.getItem(STORE_KEY);
+          setVisible(v !== '1');
+        } catch {
+          setVisible(true);
+        }
       } else {
+        // 옵션 꺼져있으면 항상 표시
         setVisible(true);
       }
     })();
-  }, [controlledVisible, rememberOption, isControlled]);
+  }, [controlledVisible, rememberOption, isControlled, devResetOnMount]);
 
+  /** 닫기 처리 */
   const close = async () => {
     try {
       if (!isControlled && rememberOption && dontShowAgain) {
+        // 체크되어 있으면 AsyncStorage에 기록
         await AsyncStorage.setItem(STORE_KEY, '1');
       }
     } finally {
@@ -52,10 +85,10 @@ export default function IntroSeverityGuide({
     }
   };
 
-  if (!visible) return null;
+  if (!visible) return null; // 표시 안 함
 
-  // i18n 배열 안전 처리
-  const asArray = (v: unknown): string[] => (Array.isArray(v) ? v as string[] : []);
+  // i18n 배열 안전 처리 (desc가 여러 줄일 수 있으므로 배열로 받음)
+  const asArray = (v: unknown): string[] => (Array.isArray(v) ? (v as string[]) : []);
   const rows = [
     {
       color: '#ef4444',
@@ -84,11 +117,8 @@ export default function IntroSeverityGuide({
     >
       <View style={s.backdrop} testID="introGuide.backdrop">
         <View style={s.sheet} testID="introGuide.sheet" accessible accessibilityLabel={t('guide.title')}>
-          <Text
-            style={s.title}
-            accessibilityRole="header"
-            testID="introGuide.title"
-          >
+          {/* 타이틀 */}
+          <Text style={s.title} accessibilityRole="header" testID="introGuide.title">
             {t('guide.title')}
           </Text>
 
@@ -96,6 +126,7 @@ export default function IntroSeverityGuide({
             {t('guide.sub')}
           </Text>
 
+          {/* 위험도 리스트 */}
           <ScrollView
             style={{ maxHeight: 360 }}
             contentContainerStyle={{ paddingBottom: 8 }}
@@ -106,7 +137,7 @@ export default function IntroSeverityGuide({
             ))}
           </ScrollView>
 
-          {/* rememberOption=true일 때만 체크박스 노출 */}
+          {/* "다시 보지 않기" 체크박스 */}
           {rememberOption && (
             <Pressable
               style={s.checkboxRow}
@@ -123,6 +154,7 @@ export default function IntroSeverityGuide({
             </Pressable>
           )}
 
+          {/* 닫기 버튼 */}
           <Pressable
             style={s.primaryBtn}
             onPress={close}
@@ -138,6 +170,7 @@ export default function IntroSeverityGuide({
   );
 }
 
+// 개별 행 (색상 점 + 타이틀 + 설명 목록)
 function RowDot({ color, title, desc }: { color: string; title: string; desc: string[] }) {
   return (
     <View style={s.row}>
@@ -155,6 +188,9 @@ function RowDot({ color, title, desc }: { color: string; title: string; desc: st
   );
 }
 
+// ──────────────────────────────────────────────
+// 스타일 정의
+// ──────────────────────────────────────────────
 const s = StyleSheet.create({
   backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.45)', alignItems: 'center', justifyContent: 'center', padding: 18 },
   sheet: { width: '100%', maxWidth: 480, backgroundColor: '#fff', borderRadius: 16, padding: 18, elevation: 10 },
